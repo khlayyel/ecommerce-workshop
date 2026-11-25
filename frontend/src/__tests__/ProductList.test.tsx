@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import ProductList from '../components/ProductList';
 import { getProducts } from '../api/products';
 
@@ -13,5 +13,5 @@ test('affiche la liste des produits', async () => {
 
   render(<ProductList />);
 
-  await waitFor(() => expect(screen.getByText('PC Portable')).toBeInTheDocument());
+  expect(await screen.findByText('PC Portable')).toBeInTheDocument();
 });
