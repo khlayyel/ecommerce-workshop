@@ -12,10 +12,10 @@ const start = async () => {
 
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('MongoDB connecté');
+    console.log(`MongoDB connecté (${mongoose.connection.host})`);
 
-    app.listen(PORT, () => {
-      console.log(`API démarrée sur http://localhost:${PORT}`);
+    app.listen(PORT, '0.0.0.0', () => {
+      console.log(`API démarrée sur http://0.0.0.0:${PORT}`);
     });
   } catch (error) {
     console.error('Impossible de démarrer le serveur :', error.message);
