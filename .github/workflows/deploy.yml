@@ -1,0 +1,34 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      RENDER_BACKEND_HOOK: ${{ secrets.RENDER_BACKEND_HOOK }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - run: npm run install-all
+
+      - run: npm test --prefix backend
+
+      - run: npm test --prefix frontend -- --watchAll=false
+
+      - name: Deploy backend to Render
+        if: env.RENDER_BACKEND_HOOK != ''
+        run: curl -fsS -X POST "$RENDER_BACKEND_HOOK"
+
+      - name: Deploy frontend to Vercel
+        if: env.VERCEL_TOKEN != ''
+        working-directory: frontend
+        run: npx --yes vercel@41 --prod --yes --token "$VERCEL_TOKEN"
