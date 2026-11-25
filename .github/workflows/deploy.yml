@@ -32,5 +32,4 @@ jobs:
 
       - name: Deploy frontend to Vercel
         if: env.VERCEL_TOKEN != '' && env.VERCEL_ORG_ID != '' && env.VERCEL_PROJECT_ID != ''
-        working-directory: frontend
         run: npx --yes vercel@41 --prod --yes --token "$VERCEL_TOKEN"
